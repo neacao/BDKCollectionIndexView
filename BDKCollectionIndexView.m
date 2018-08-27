@@ -268,9 +268,15 @@
 - (void)buildIndexLabels {
     NSMutableArray *workingLabels = [NSMutableArray arrayWithCapacity:self.indexTitles.count];
     NSUInteger tag = 0;
-    for (NSString *indexTitle in self.indexTitles) {
+    for (id indexTitle in self.indexTitles) {
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
-        label.text = indexTitle;
+        if ([indexTitle isKindOfClass: [NSAttributedString class]]) {
+            label.attributedText = indexTitle;
+        } else if ([indexTitle isKindOfClass: [NSString class]]) {
+            label.text = indexTitle;
+        } else {
+            continue;
+        }
         label.tag = tag;
         tag = tag + 1;
         label.font = self.font;
